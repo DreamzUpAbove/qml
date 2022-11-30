@@ -36,7 +36,16 @@ COMMON_CLI_FLAGS = {
         "action": "store_true",
         "help": "Show files will be affected without updating anything",
     },
-    "verbose": {"action": "store_true", "help": "Additional logging output"},
+    "verbose": {
+        "action": "store_true",
+        "help": "Additional logging output"
+    },
+    "gallery-dir-name": {
+        "type": str,
+        "default": "demos",
+        "required": False,
+        "help": "The gallery directory name inside build-dir where sphinx puts all gallery demo html files"
+    }
 }
 
 
@@ -87,6 +96,7 @@ def cli_parser():
         "num-workers",
         "build-dir",
         "examples-dir",
+        "gallery-dir-name",
         "offset",
         "dry-run",
         "verbose",
@@ -97,17 +107,16 @@ def cli_parser():
         action="store_true",
         help="Indicate if static images in the build-dir/_images directory should be deleted or not",
     )
-    subparsers_remove_html.add_argument(
-        "--gallery-dir-name",
-        type=str,
-        default="demos",
-        help="The gallery directory name inside build-dir where sphinx puts all gallery demo html files",
-    )
 
     subparsers_clean_sitemap = subparsers.add_parser(
         "clean-sitemap", description="Delete html files and remove them from sitemap.xml"
     )
-    add_flags_to_subparser(subparsers_clean_sitemap, "build-dir", "verbose", "dry-run")
+    add_flags_to_subparser(
+        subparsers_clean_sitemap,
+        "build-dir",
+        "verbose",
+        "dry-run"
+    )
     subparsers_clean_sitemap.add_argument(
         "--html-files",
         type=str,
