@@ -59,9 +59,9 @@ jobs:
         run: |
           qml_pipeline_utils \
           remove-executable-code-from-extraneous-demos \
-          --num-workers=1 \
+          --num-workers=14 \
           --examples-dir="${{ github.workspace }}/demonstrations" \
-          --offset=999 \
+          --offset=0 \
           --verbose
 
       - name: Build tutorials
