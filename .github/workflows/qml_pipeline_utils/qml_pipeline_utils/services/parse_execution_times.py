@@ -19,17 +19,17 @@ def convert_execution_time_to_ms(execution_time: str) -> int:
 
     execution_time_min = int(execution_time_parts[0])
     execution_time_sec = int(execution_time_parts[1])
-    execution_time_dsc = int(execution_time_parts[2])  # `dsc` short for decisecond (1 tenth of a second)
+    execution_time_dsc = int(
+        execution_time_parts[2]
+    )  # `dsc` short for decisecond (1 tenth of a second)
 
-    return (execution_time_min * 60000) \
-        + (execution_time_sec * 1000) \
-        + (execution_time_dsc * 100)
+    return (execution_time_min * 60000) + (execution_time_sec * 1000) + (execution_time_dsc * 100)
 
 
-def parse_sg_execution_times(sphinx_gallery_dir: "Path") -> Dict[str, int]:
+def parse_execution_times(sphinx_build_directory: "Path") -> Dict[str, int]:
     # Hard coding the filename here as it is not something the user controls.
     # The sg_execution_times exists inside the directory sphinx puts all the built "galleries"
-    sg_execution_file_location = sphinx_gallery_dir / "sg_execution_times.html"
+    sg_execution_file_location = sphinx_build_directory / "sg_execution_times.html"
 
     with sg_execution_file_location.open("r") as fh:
         sg_execution_file_content = fh.read()
@@ -37,11 +37,13 @@ def parse_sg_execution_times(sphinx_gallery_dir: "Path") -> Dict[str, int]:
     tutorial_name_matches = PATTERN_TUTORIAL_NAME.findall(sg_execution_file_content)
     tutorial_time_matches = PATTERN_TUTORIAL_TIME.findall(sg_execution_file_content)
 
-    assert len(tutorial_name_matches) == len(tutorial_time_matches), f"Unable to properly parse " \
-                                                                     f"{str(sg_execution_file_location)}." \
-                                                                     f"Got {len(tutorial_name_matches)} tutorial " \
-                                                                     f"names, but {len(tutorial_time_matches)} " \
-                                                                     f"execution time matches"
+    assert len(tutorial_name_matches) == len(tutorial_time_matches), (
+        f"Unable to properly parse "
+        f"{str(sg_execution_file_location)}."
+        f"Got {len(tutorial_name_matches)} tutorial "
+        f"names, but {len(tutorial_time_matches)} "
+        f"execution time matches"
+    )
 
     return {
         tutorial_name: convert_execution_time_to_ms(tutorial_time)

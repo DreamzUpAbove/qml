@@ -126,6 +126,7 @@ class QMLDemo:
         metadata (Dict[str, Any]): Any additional (and optional) information about the demo that can be stored at
                                    initialization for usage later.
     """
+
     name: str
     load: Union[int, float]
     metadata: Dict[str, Any] = field(default_factory=dict)
@@ -135,6 +136,7 @@ class Worker:
     """
     Represent a worker and is used to track all the tasks assigned to a specific instance of Worker.
     """
+
     def __init__(self):
         self.__tasks: List[QMLDemo] = []
 
@@ -163,6 +165,7 @@ class SortedWorkerHandler:
     The class buffers all incoming tasks in an internal list and distributes the load across workers once `assign_tasks_to_workers`
     is called.
     """
+
     def __init__(self, num_workers: int):
         self.__task_buffer: List[QMLDemo] = []
         self.__workers: List[Worker] = [Worker() for _ in range(num_workers)]
@@ -214,18 +217,8 @@ class WorkerAndTaskJSONEncoder(json.JSONEncoder):
         if isinstance(o, QMLDemo):
             return asdict(o)
         elif isinstance(o, Worker):
-            return {
-                "load": o.load,
-                "tasks": [self.default(t) for t in o.tasks]
-            }
+            return {"load": o.load, "tasks": [self.default(t) for t in o.tasks]}
         elif isinstance(o, SortedWorkerHandler):
-            return {
-                "num_workers": o.num_workers,
-                "workers": [
-                    self.default(wk)
-                    for wk in o.workers
-                ]
-            }
+            return {"num_workers": o.num_workers, "workers": [self.default(wk) for wk in o.workers]}
         else:
             return super().default(o)
-
