@@ -33,6 +33,7 @@ jobs:
         with:
           ref: ${{ matrix.branch }}
 
+      # TODO: Temp, remove
       - uses: actions/checkout@v3
         with:
           path: 'current_ref'
@@ -52,6 +53,16 @@ jobs:
           pip install -r requirements.txt
           pip install --no-deps -r requirements_no_deps.txt
           pip install --upgrade pip 'setuptools<65' cmake
+
+      # TODO: Temp, remove
+      - name: Remove extraneous executable code from demos
+        run: |
+          qml_pipeline_utils \
+          remove-executable-code-from-extraneous-demos \
+          --num-workers=1 \
+          --examples-dir="${{ github.workspace }}/demonstrations" \
+          --offset=999 \
+          --verbose
 
       - name: Build tutorials
         run: |
