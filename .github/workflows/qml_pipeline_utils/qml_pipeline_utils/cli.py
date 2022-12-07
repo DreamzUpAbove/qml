@@ -194,7 +194,7 @@ def cli_parser():
             "func": qml_pipeline_utils.services.parse_execution_times,
             "kwargs": {
                 "sphinx_build_directory": Path(getattr(parser_results, "build_dir", "")),
-                "sphinx_gallery_dir_name": getattr(parser_results, "gallery-dir-name", "")
+                "sphinx_gallery_dir_name": getattr(parser_results, "gallery_dir_name", "")
             },
         },
     }
