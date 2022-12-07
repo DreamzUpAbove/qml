@@ -26,10 +26,10 @@ def convert_execution_time_to_ms(execution_time: str) -> int:
     return (execution_time_min * 60000) + (execution_time_sec * 1000) + (execution_time_dsc * 100)
 
 
-def parse_execution_times(sphinx_build_directory: "Path") -> Dict[str, int]:
+def parse_execution_times(sphinx_build_directory: "Path", sphinx_gallery_dir_name: str) -> Dict[str, int]:
     # Hard coding the filename here as it is not something the user controls.
     # The sg_execution_times exists inside the directory sphinx puts all the built "galleries"
-    sg_execution_file_location = sphinx_build_directory / "sg_execution_times.html"
+    sg_execution_file_location = sphinx_build_directory / sphinx_gallery_dir_name / "sg_execution_times.html"
 
     with sg_execution_file_location.open("r") as fh:
         sg_execution_file_content = fh.read()
