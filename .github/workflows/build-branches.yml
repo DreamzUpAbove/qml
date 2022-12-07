@@ -72,6 +72,10 @@ jobs:
       - name: Generate Execution Time Map
         run: |
           mkdir /tmp/execution_times
+          
+          ls _build/html
+          
+          ls -R _build/html
 
           qml_pipeline_utils \
           parse-execution-times \
