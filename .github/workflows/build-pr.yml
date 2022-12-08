@@ -75,6 +75,7 @@ jobs:
         uses: XanaduAI/cloud-actions/download-github-workflow-artifact@add-workflow-artifact-download
         with:
           workflow_run_id: ${{ steps.workflow_run_id.outputs.result }}
+          github_token: ${{ github.token }}
 
       - run: |
           unzip *.zip
