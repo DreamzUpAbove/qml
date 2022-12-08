@@ -60,8 +60,6 @@ jobs:
               status: 'success',
               exclude_pull_requests: true
             }));
-
-            console.log(JSON.stringify(workflowRuns));
             
             if (!workflowRuns.length) return '';
 
