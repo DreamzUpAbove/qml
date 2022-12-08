@@ -72,7 +72,7 @@ jobs:
 
       - name: Download Demo Execution run times
         if: steps.workflow_run_id.outputs.result != ''
-        uses: XanaduAI/cloud-action/download-github-workflow-artifact@add-workflow-artifact-download
+        uses: XanaduAI/cloud-actions/download-github-workflow-artifact@add-workflow-artifact-download
         with:
           workflow_run_id: ${{ steps.workflow_run_id.outputs.result }}
 
