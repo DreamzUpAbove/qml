@@ -6,6 +6,9 @@ on:
       - master
       - dev
 
+      # TEMP
+      - sc-29723-qml-pipeline-job-load-balancing
+
 env:
   NUM_WORKERS: 15
 
@@ -32,6 +35,40 @@ jobs:
         run: |
           cd .github/workflows/qml_pipeline_utils
           pip install .
+
+      - name: Get Workflow Artifact target branch
+        id: workflow_target_branch
+        uses: actions/github-script@v6
+        with:
+          result-encoding: string
+          script: |
+            return ("${{ github.event_name }}" === "push") ? "${{ github.ref_name }}" : "${{ github.event.pull_request.base.ref }}";
+
+      - name: Get Workflow run ID
+        uses: actions/github-script@v6
+        with:
+          result-encoding: string
+          script: |
+            const destWorkflowBranch = "${{ steps.workflow_target_branch.outputs.result }}";
+
+            const workflowRuns = await github.paginate(github.rest.actions.listWorkflowRuns.endpoint.merge({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'build-branches.yml',
+              branch: destWorkflowBranch,
+              event: 'schedule',
+              status: 'success',
+              exclude_pull_requests: true
+            }));
+
+            console.log(JSON.stringify(workflowRuns));
+
+            const workflowRunsSorted = workflowRuns.data.workflow_runs.sort((a, b) => b.run_number - a.run_number);
+
+            const mostRecentWorkflowRun = workflowRunsSorted[0];
+            console.log(JSON.stringify(mostRecentWorkflowRun));
+
+            return mostRecentWorkflowRun.id
 
       - name: Generate Build Matrix
         id: compute-strategy-matrix
