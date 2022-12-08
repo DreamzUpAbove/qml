@@ -78,6 +78,8 @@ jobs:
             --num-workers=${{ env.NUM_WORKERS }} \
             --examples-dir='${{ github.workspace }}/demonstrations')" >> $GITHUB_OUTPUT
 
+      - run: exit 1
+
     outputs:
       strategy-matrix: ${{ steps.compute-strategy-matrix.outputs.strategy-matrix }}
 
