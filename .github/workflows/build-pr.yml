@@ -56,12 +56,14 @@ jobs:
               repo: context.repo.repo,
               workflow_id: 'build-branches.yml',
               branch: destWorkflowBranch,
-              event: 'schedule',
+              event: 'push',
               status: 'success',
               exclude_pull_requests: true
             }));
 
             console.log(JSON.stringify(workflowRuns));
+            
+            if (!workflowRuns.length) return '';
 
             const workflowRunsSorted = workflowRuns.data.workflow_runs.sort((a, b) => b.run_number - a.run_number);
 
