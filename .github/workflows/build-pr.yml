@@ -65,7 +65,7 @@ jobs:
             
             if (!workflowRuns.length) return '';
 
-            const workflowRunsSorted = workflowRuns.data.workflow_runs.sort((a, b) => b.run_number - a.run_number);
+            const workflowRunsSorted = workflowRuns.sort((a, b) => b.run_number - a.run_number);
 
             const mostRecentWorkflowRun = workflowRunsSorted[0];
             console.log(JSON.stringify(mostRecentWorkflowRun));
