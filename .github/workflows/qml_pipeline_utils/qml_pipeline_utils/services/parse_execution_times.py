@@ -1,5 +1,5 @@
 import re
-from typing import Dict, List, TYPE_CHECKING
+from typing import Dict, TYPE_CHECKING
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -7,6 +7,10 @@ if TYPE_CHECKING:
 PATTERN_FLAGS = re.MULTILINE
 PATTERN_TUTORIAL_NAME = re.compile(r"<span\sclass=\"pre\">(.*\.py)</span>", flags=PATTERN_FLAGS)
 PATTERN_TUTORIAL_TIME = re.compile(r"<td><p>(\d{2}:\d{2}.\d{3})</p></td>", flags=PATTERN_FLAGS)
+
+MS_IN_MIN = 60000  # Number of milliseconds in a minute
+MS_IN_SEC = 1000   # Number of milliseconds in a second
+MS_IN_DSC = 100    # Number of milliseconds in a decisecond (tenth of a second)
 
 
 def convert_execution_time_to_ms(execution_time: str) -> int:
@@ -19,11 +23,9 @@ def convert_execution_time_to_ms(execution_time: str) -> int:
 
     execution_time_min = int(execution_time_parts[0])
     execution_time_sec = int(execution_time_parts[1])
-    execution_time_dsc = int(
-        execution_time_parts[2]
-    )  # `dsc` short for decisecond (1 tenth of a second)
+    execution_time_dsc = int(execution_time_parts[2])
 
-    return (execution_time_min * 60000) + (execution_time_sec * 1000) + (execution_time_dsc * 100)
+    return (execution_time_min * MS_IN_MIN) + (execution_time_sec * MS_IN_SEC) + (execution_time_dsc * MS_IN_DSC)
 
 
 def parse_execution_times(sphinx_build_directory: "Path", sphinx_gallery_dir_name: str) -> Dict[str, int]:
