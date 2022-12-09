@@ -78,8 +78,8 @@ jobs:
           github_token: ${{ github.token }}
 
       - run: |
-          unzip '*.zip'
-          cat *.json
+          unzip 'execution_times_master.zip'
+          cat execution_times.json
 
       - name: Generate Build Matrix
         id: compute-strategy-matrix
