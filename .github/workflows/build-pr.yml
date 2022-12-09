@@ -78,7 +78,7 @@ jobs:
           github_token: ${{ github.token }}
 
       - run: |
-          unzip *.zip
+          unzip '*.zip'
           cat *.json
 
       - name: Generate Build Matrix
